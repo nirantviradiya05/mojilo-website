@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useOrders } from '../context/OrdersContext';
 import { useWishlist } from '../context/WishlistContext';
-import ProductCard from '../componet/ProductCard';
+import ProductCard from '../components/ProductCard';
 import {
   User,
   Heart,

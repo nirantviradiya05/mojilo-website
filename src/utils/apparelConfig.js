@@ -1,14 +1,14 @@
 // src/config/apparelConfig.js
 
 // Import the 3D Canvas models from your exact folder spelling
-import { TshirtModel } from '../componet/TshirtModel';
-import { LongSleeveModel } from '../componet/LongSleeveModel'; 
-import { HoodieModel } from '../componet/HoodieModel';       
-import { OversizedModel } from '../componet/OversizedModel'; 
+import { TshirtModel } from '../components/TshirtModel';
+import { LongSleeveModel } from '../components/LongSleeveModel'; 
+import { HoodieModel } from '../components/HoodieModel';       
+import { OversizedModel } from '../components/OversizedModel'; 
 
 // Import your TWO universal canvas outline components
-import TshirtCanvasFront from '../componet/TshirtCanvasFront';
-import TshirtCanvasBack from '../componet/TshirtCanvasBack';
+import TshirtCanvasFront from '../components/TshirtCanvasFront';
+import TshirtCanvasBack from '../components/TshirtCanvasBack';
 
 // Import the SVG path data variables from your centralized constants file
 import { SVG_PATHS } from '../constants/svgPaths';

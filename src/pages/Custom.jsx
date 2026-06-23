@@ -13,7 +13,7 @@ import CoustomTshirt3 from '../assets/CoustomTshirt3.png';
 import CoustomTshirt4 from '../assets/CoustomTshirt4.png';
 import BannerImage from '../assets/CoustomBennerImg1.png';
 
-import CoustomProduct from '../componet/CoustomProduct';
+import CoustomProduct from '../components/CoustomProduct';
 
 const apparelDatabase = {
   'half-sleeve': {

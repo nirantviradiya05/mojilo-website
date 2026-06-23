@@ -3,10 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import { Heart, Plus, Minus, Truck, RotateCcw } from 'lucide-react';
 
 import { products } from '../assets/Data'; 
-import RelatedProducts from '../componet/RelatedProduct'; 
+import RelatedProducts from '../components/RelatedProduct'; 
 import { useWishlist } from '../context/WishlistContext'; 
 import { useCart } from '../context/CartContext';
-import AddToCartSuccessModal from '../componet/AddToCartSuccessModal'; 
+import AddToCartSuccessModal from '../components/AddToCartSuccessModal'; 
 
 export default function ProductDetails() {
   const { id } = useParams();

@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductCard from '../componet/ProductCard'; // Adjust path if it's '../componet/ProductCard'
+import ProductCard from './ProductCard'; // Adjust path if it's './ProductCard'
 import { products } from '../assets/Data'; // Adjust path if it's '../assets/Data'
 
 export function RelatedProducts({ currentProductId, category }) {

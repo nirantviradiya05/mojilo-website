@@ -5,7 +5,7 @@ import ToolBar from "./ToolBar";
 // 📦 1. CRITICAL IMPORTS: Ensure all sub-panels are imported correctly
 import TypographyPanel from "./TypographyPanel";
 import StickersPanel from "./StickersPanel";
-import ShapesPanel from "../componet/ShapesPanel"; // 👈 Make sure this file exists!
+import ShapesPanel from "./ShapesPanel"; // 👈 Make sure this file exists!
 
 export default function ToolsSidebar({ manualSync }) {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext'; 
-import ConfirmationModal from '../componet/ConfirmationModal';
+import ConfirmationModal from '../components/ConfirmationModal';
 import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {

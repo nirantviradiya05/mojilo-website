@@ -6,8 +6,8 @@ import { Environment, Loader, OrbitControls } from "@react-three/drei";
 import { Eye, Layers } from "lucide-react";
 
 // Components
-import DesignArea from "../componet/DesignArea";
-import ToolsSidebar from "../componet/ToolsSidebar";
+import DesignArea from "../components/DesignArea";
+import ToolsSidebar from "../components/ToolsSidebar";
 
 // Centralized Configuration Map Layer
 import { apparelConfig } from "../utils/apparelConfig.js"; // 🟢 Added configuration bridge

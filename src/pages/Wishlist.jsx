@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import ProductCard from '../componet/ProductCard'; 
+import ProductCard from '../components/ProductCard'; 
 import { useWishlist } from '../context/WishlistContext'; 
 import { useCart } from '../context/CartContext'; 
 import { products } from '../assets/Data'; 
-import ConfirmationModal from '../componet/ConfirmationModal'; // Adjust path if needed
+import ConfirmationModal from '../components/ConfirmationModal'; // Adjust path if needed
 
 const WishlistPage = () => {
   const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();

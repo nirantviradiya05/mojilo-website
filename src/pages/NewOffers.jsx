@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom';
 // 1. IMPORT DYNAMIC DATA FROM data.js
 import { products } from '../assets/Data.js'; 
 
-import ProductCard from "../componet/ProductCard";
+import ProductCard from "../components/ProductCard";
 import OffersSlideImg1 from '../assets/OffersSlideImg1.png';
 import OffersSlideImg2 from '../assets/OffersSlideImg2.png';
 import OffersSlideImg3 from '../assets/OffersSlideImg3.png';

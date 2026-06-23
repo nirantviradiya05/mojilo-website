@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Search, SlidersHorizontal, ArrowUpDown, Check, X } from "lucide-react";
-import ProductCard from "../componet/ProductCard";
+import ProductCard from "../components/ProductCard";
 
 // IMPORT DYNAMIC DATA FROM data.js
 import { products } from "../assets/Data"; 

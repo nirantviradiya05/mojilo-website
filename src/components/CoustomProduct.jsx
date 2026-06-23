@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import ProductCard from '../componet/ProductCard'; 
+import ProductCard from './ProductCard'; 
 
 // Import dynamic data from your asset file
 import { products } from '../assets/Data'; 
