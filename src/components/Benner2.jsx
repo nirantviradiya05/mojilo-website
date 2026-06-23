@@ -1,7 +1,7 @@
 import React from 'react';
-import Benner2img1 from '../assets/benner2img1.png';
-import Benner2img2 from '../assets/benner2img2.png';
-import Benner2img3 from '../assets/benner2img3.png'; // Replace with your T-shirt illustration
+import Benner2img1 from '../assets/Benner2img1.png';
+import Benner2img2 from '../assets/Benner2img2.png';
+import Benner2img3 from '../assets/Benner2img3.png'; // Replace with your T-shirt illustration
 
 export default function Banner2() {
   const steps = [

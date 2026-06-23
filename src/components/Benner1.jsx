@@ -1,5 +1,5 @@
 import React from 'react';
-import BennerMan from '../assets/bennerman.png'; // Ensure you have an appropriate image in this path
+import BennerMan from '../assets/BennerMan.png'; // Ensure you have an appropriate image in this path
 import { useNavigate } from 'react-router-dom';
 
 export default function Banner1() {

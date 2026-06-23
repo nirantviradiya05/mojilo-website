@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, User, Star, ShoppingBag, Menu, X, ArrowRight, LogOut } from 'lucide-react';
-import logo from '../assets/logo.png'; 
+import logo from '../assets/Logo.png'; 
 import { Link, useNavigate } from 'react-router-dom';
 import { useWishlist } from '../context/WishlistContext'; 
 import { useCart } from '../context/CartContext';
