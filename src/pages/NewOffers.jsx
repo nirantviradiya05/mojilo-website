@@ -51,7 +51,8 @@ const NewOffers = () => {
   };
 
   return (
-    <div className="w-full bg-[#E5D5C5] relative overflow-hidden font-sans flex items-center justify-center p-6 sm:p-12 md:p-20 group/slider">
+    // FIX: reduced padding on mobile (p-4 instead of p-6), kept sm/md unchanged
+    <div className="w-full bg-[#E5D5C5] relative overflow-hidden font-sans flex items-center justify-center p-4 sm:p-12 md:p-20 group/slider">
       
       {/* Abstract Background Line Vector Effects */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
@@ -69,16 +70,16 @@ const NewOffers = () => {
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
           {slides.map((slide, index) => (
-            <div key={index} className="w-full shrink-0 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            // FIX: on mobile show text first (order), then image below; gap reduced on mobile
+            <div key={index} className="w-full shrink-0 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-12 items-center">
               
               {/* Left Content Column */}
-              <div className="lg:col-span-6 flex flex-col justify-center space-y-6 text-[#1A1A1A]">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none">
+              {/* FIX: order-2 on mobile so text appears after image area; order-1 on lg stays normal */}
+              <div className="lg:col-span-6 flex flex-col justify-center space-y-4 sm:space-y-6 text-[#1A1A1A] order-2 lg:order-1">
+                {/* FIX: smaller base font on mobile (text-3xl), scale up at sm/md */}
+                <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none">
                   {slide.titleLine1} <span className="text-[#C58228] relative inline-block">
                     {slide.titleHighlight}
-                    <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5 5C50 15 150 15 195 5" stroke="#C58228" strokeWidth="3" strokeLinecap="round"/>
-                    </svg>
                   </span>
                   <br />
                   {slide.titleLine2}
@@ -86,12 +87,13 @@ const NewOffers = () => {
                   {slide.titleLine3}
                 </h1>
                 
-                <p className="text-sm sm:text-base text-gray-700 font-medium leading-relaxed max-w-xl">
+                {/* FIX: hidden on mobile to save vertical space, shown sm and up */}
+                <p className="hidden sm:block text-sm sm:text-base text-gray-700 font-medium leading-relaxed max-w-xl">
                   {slide.description}
                 </p>
                 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap items-center gap-6 pt-4">
+                <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-2 sm:pt-4">
                   <button onClick={() => navigate('/custom')} className="bg-[#BD7A22] hover:bg-[#A3661B] text-white font-bold py-3 px-8 rounded-md transition shadow-md text-sm sm:text-base cursor-pointer">
                     Get Started
                   </button>
@@ -99,8 +101,10 @@ const NewOffers = () => {
               </div>
 
               {/* Right Graphics/Mockup Column */}
-              <div className="lg:col-span-6 relative flex justify-center items-center h-[450px] sm:h-[550px]">
-                <div className="absolute left-0 top-10 w-48 sm:w-95 transform z-10 filter drop-shadow-2xl">
+              {/* FIX: reduced height on mobile (h-[260px]), order-1 so it appears on top on mobile */}
+              <div className="lg:col-span-6 relative flex justify-center items-center h-[260px] xs:h-[320px] sm:h-[450px] md:h-[550px] order-1 lg:order-2">
+                {/* FIX: smaller image on mobile */}
+                <div className="absolute left-0 top-6 sm:top-10 w-28 sm:w-48 md:w-72 transform z-10 filter drop-shadow-2xl">
                   <img 
                     src={slide.tshirtBgImage} 
                     alt="Product Mockup" 
@@ -109,7 +113,7 @@ const NewOffers = () => {
                   />
                 </div>
 
-                <div className="absolute right-4 bottom-0 h-[90%] w-[70%] sm:w-[65%] z-20 overflow-hidden rounded-b-2xl flex items-end">
+                <div className="absolute right-4 bottom-0 h-[90%] w-[65%] sm:w-[70%] md:w-[65%] z-20 overflow-hidden rounded-b-2xl flex items-end">
                   <img 
                     src={slide.manImage} 
                     alt="Model Showcase" 
@@ -117,26 +121,26 @@ const NewOffers = () => {
                   />
                 </div>
 
-                {/* UI Badges */}
-                <div className="absolute right-[32%] top-16 bg-[#BD7A22] p-2.5 rounded-lg shadow-lg transform rotate-12 z-10 text-white">
+                {/* UI Badges - hidden on mobile to avoid clutter */}
+                <div className="hidden sm:flex absolute right-[32%] top-16 bg-[#BD7A22] p-2.5 rounded-lg shadow-lg transform rotate-12 z-10 text-white">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H4a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
 
-                <div className="absolute left-[20%] bottom-16 bg-[#BD7A22] p-3 rounded-lg shadow-lg transform -rotate-12 z-30 text-white font-serif text-lg sm:text-2xl font-bold leading-none w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
+                <div className="hidden sm:flex absolute left-[20%] bottom-16 bg-[#BD7A22] p-3 rounded-lg shadow-lg transform -rotate-12 z-30 text-white font-serif text-lg sm:text-2xl font-bold leading-none w-10 h-10 sm:w-12 sm:h-12 items-center justify-center">
                 </div>
 
-                {/* Customer Satisfaction Analytics Box */}
-                <div className="absolute right-0 top-20 bg-white rounded-xl p-3 sm:p-4 shadow-xl z-30 flex flex-col items-center space-y-2 text-center w-24 sm:w-28 border border-gray-100">
-                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+                {/* Customer Satisfaction Analytics Box - smaller on mobile */}
+                <div className="absolute right-0 top-4 sm:top-20 bg-white rounded-xl p-2 sm:p-4 shadow-xl z-30 flex flex-col items-center space-y-1 sm:space-y-2 text-center w-16 sm:w-24 md:w-28 border border-gray-100">
+                  <div className="relative w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center">
                     <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                       <path className="text-gray-100" strokeWidth="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                       <path className="text-amber-500" strokeDasharray="90, 100" strokeWidth="3.5" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                     </svg>
-                    <span className="absolute text-[10px] sm:text-xs font-black text-gray-800">{slide.satisfactionRate}</span>
+                    <span className="absolute text-[8px] sm:text-[10px] md:text-xs font-black text-gray-800">{slide.satisfactionRate}</span>
                   </div>
-                  <span className="text-[9px] sm:text-[10px] font-bold text-gray-700 leading-tight">Customer Satisfaction</span>
+                  <span className="text-[7px] sm:text-[9px] md:text-[10px] font-bold text-gray-700 leading-tight">Customer Satisfaction</span>
                 </div>
 
               </div>
@@ -145,25 +149,27 @@ const NewOffers = () => {
         </div>
       </div>
 
-      {/* Slider Controls */}
+      {/* Slider Controls - always visible on mobile (removed opacity-0 on mobile) */}
       <button 
         onClick={prevSlide}
-        className="absolute left-2 sm:left-6 z-40 p-2 bg-[#BD7A22]/80 hover:bg-[#BD7A22] text-white rounded-full shadow-lg transition opacity-0 group-hover/slider:opacity-100 focus:opacity-100 cursor-pointer"
+        className="absolute left-1 sm:left-6 z-40 p-1.5 sm:p-2 bg-[#BD7A22]/80 hover:bg-[#BD7A22] text-white rounded-full shadow-lg transition opacity-100 sm:opacity-0 sm:group-hover/slider:opacity-100 focus:opacity-100 cursor-pointer"
         aria-label="Previous slide"
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={18} className="sm:hidden" />
+        <ChevronLeft size={24} className="hidden sm:block" />
       </button>
       
       <button 
         onClick={nextSlide}
-        className="absolute right-2 sm:right-6 z-40 p-2 bg-[#BD7A22]/80 hover:bg-[#BD7A22] text-white rounded-full shadow-lg transition opacity-0 group-hover/slider:opacity-100 focus:opacity-100 cursor-pointer"
+        className="absolute right-1 sm:right-6 z-40 p-1.5 sm:p-2 bg-[#BD7A22]/80 hover:bg-[#BD7A22] text-white rounded-full shadow-lg transition opacity-100 sm:opacity-0 sm:group-hover/slider:opacity-100 focus:opacity-100 cursor-pointer"
         aria-label="Next slide"
       >
-        <ChevronRight size={24} />
+        <ChevronRight size={18} className="sm:hidden" />
+        <ChevronRight size={24} className="hidden sm:block" />
       </button>
 
       {/* Indicator Dots */}
-      <div className="absolute bottom-4 flex gap-2 z-40">
+      <div className="absolute bottom-3 sm:bottom-4 flex gap-2 z-40">
         {slides.map((_, i) => (
           <button
             key={i}
@@ -186,10 +192,11 @@ const CategoryFilter = ({ activeCategory, setActiveCategory }) => {
 
   return (
     <section className="w-full bg-white border-t border-gray-100">
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-6 px-6 sm:px-12 md:px-20">
+      {/* FIX: tighter padding on mobile */}
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 py-4 sm:py-6 px-4 sm:px-12 md:px-20">
 
-        <div className="flex flex-wrap items-center gap-4">
-          <h2 className="text-xl sm:text-2xl font-black text-[#1A1A1A]">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-black text-[#1A1A1A]">
             New Offers For
           </h2>
 
@@ -198,7 +205,8 @@ const CategoryFilter = ({ activeCategory, setActiveCategory }) => {
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`px-4 py-2 text-sm font-bold rounded-md transition cursor-pointer ${
+                // FIX: slightly smaller padding on mobile
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold rounded-md transition cursor-pointer ${
                   activeCategory === category
                     ? 'bg-[#BD7A22] text-white'
                     : 'text-black hover:bg-gray-200'
@@ -211,7 +219,8 @@ const CategoryFilter = ({ activeCategory, setActiveCategory }) => {
         </div>
 
         <Link to="/collection">
-          <button className="px-4 py-2 rounded-lg bg-[#F5F5F5] font-semibold hover:bg-gray-200 transition cursor-pointer">
+          {/* FIX: full width on mobile so it's easy to tap */}
+          <button className="w-full sm:w-auto text-center px-4 py-2 rounded-lg bg-[#F5F5F5] font-semibold hover:bg-gray-200 transition cursor-pointer text-sm">
             View All
           </button>
         </Link>
@@ -227,7 +236,6 @@ const CategoryFilter = ({ activeCategory, setActiveCategory }) => {
 const FeaturedSectionWrapper = () => {
   const [activeCategory, setActiveCategory] = useState('Man');
 
-  // Filters items dynamically from the imported products array
   const filteredProducts = products.filter(
     (product) => product.category === activeCategory
   );
@@ -239,7 +247,7 @@ const FeaturedSectionWrapper = () => {
       <NewOffers />
 
       {/* Gap */}
-      <div className="h-6 bg-white"></div>
+      <div className="h-4 sm:h-6 bg-white"></div>
 
       {/* Category Filter */}
       <CategoryFilter
@@ -248,14 +256,14 @@ const FeaturedSectionWrapper = () => {
       />
 
       {/* Product Grid */}
-      <section className="w-full bg-white pb-16">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20">
+      <section className="w-full bg-white pb-10 sm:pb-16">
+        {/* FIX: tighter horizontal padding on mobile */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-12 md:px-20 pt-4 sm:pt-0">
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* FIX: 2 columns on mobile instead of 1, keeping sm:2 and lg:4 */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
 
             {filteredProducts.map((product) => {
-              // Quick structural adapter: if your ProductCard expects "image" (string) 
-              // but data.js passes "images" (array), map it gracefully here
               const adaptedProduct = {
                 ...product,
                 image: product.image || (product.images && product.images[0])

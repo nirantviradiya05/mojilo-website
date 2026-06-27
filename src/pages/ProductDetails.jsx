@@ -80,7 +80,6 @@ export default function ProductDetails() {
       return;
     }
 
-    // Find full color object from product colors
     let colorData = selectedColor;
     if (product.colors && product.colors.length > 0) {
       const foundColor = product.colors.find(c => 
@@ -91,7 +90,6 @@ export default function ProductDetails() {
       }
     }
 
-    // Creating a composite variant identifier key
     const colorId = typeof colorData === 'object' ? colorData.id : colorData;
     const variantId = `${product.id}-${colorId}-${selectedSize}`;
 
@@ -103,30 +101,39 @@ export default function ProductDetails() {
       price: product.price 
     };
 
-    // Explicitly pass both arguments to context
     addToCart(itemWithVariants, quantity);
     
-    // Show custom success modal
     setAddedProduct(itemWithVariants);
     setIsAddSuccessModalOpen(true);
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 font-sans text-[#1a1a1a]">
-      <nav className="text-xs uppercase tracking-wider text-gray-500 mb-8">
+    // FIX: reduced px on mobile (px-3), tighter top padding (py-5)
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-5 sm:py-8 font-sans text-[#1a1a1a]">
+
+      {/* FIX: smaller breadcrumb text on mobile, tighter mb */}
+      <nav className="text-[10px] sm:text-xs uppercase tracking-wider text-gray-500 mb-4 sm:mb-8">
         <Link to="/collection"><span className="underline cursor-pointer hover:text-black">Our Collections</span></Link>
         <span className="mx-2">/</span>
-        <span className="text-gray-800 font-medium">{product.title}</span>
+        {/* FIX: truncate long product titles on mobile */}
+        <span className="text-gray-800 font-medium truncate max-w-[160px] inline-block align-bottom">{product.title}</span>
       </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div className="lg:col-span-7 flex flex-col-reverse lg:flex-row gap-4 h-auto lg:h-[550px]">
-          <div className="flex flex-row lg:flex-col gap-3 w-full lg:w-24 overflow-x-auto lg:overflow-y-auto py-1 lg:py-0 scrollbar-none">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
+
+        {/* IMAGE GALLERY */}
+        {/* FIX: on mobile use row layout (flex-col-reverse keeps thumbnails below), 
+            height auto on mobile, fixed on lg */}
+        <div className="lg:col-span-7 flex flex-col-reverse lg:flex-row gap-3 sm:gap-4 h-auto lg:h-[550px]">
+
+          {/* Thumbnails: horizontal scroll on mobile, vertical on lg */}
+          {/* FIX: smaller thumbnail size on mobile (w-16 h-20) */}
+          <div className="flex flex-row lg:flex-col gap-2 sm:gap-3 w-full lg:w-24 overflow-x-auto lg:overflow-y-auto py-1 lg:py-0 scrollbar-none">
             {productImages.map((img, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedImage(img)}
-                className={`w-20 h-24 lg:w-full aspect-[3/4] flex-shrink-0 overflow-hidden rounded border-2 transition-all ${
+                className={`w-16 h-20 sm:w-20 sm:h-24 lg:w-full aspect-[3/4] flex-shrink-0 overflow-hidden rounded border-2 transition-all ${
                   selectedImage === img ? 'border-black scale-95' : 'border-transparent opacity-80 hover:opacity-100'
                 }`}
               >
@@ -135,20 +142,26 @@ export default function ProductDetails() {
             ))}
           </div>
 
+          {/* Main image */}
+          {/* FIX: on mobile aspect-[3/4] gives a natural tall frame without fixed height */}
           <div className="flex-1 bg-[#d6bc9a] relative overflow-hidden flex items-end justify-center rounded-sm aspect-[3/4] lg:aspect-auto lg:h-full">
             {selectedImage && (
               <img src={selectedImage} alt={product.title} className="w-full h-[90%] object-contain object-bottom mix-blend-multiply drop-shadow-xl" />
             )}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-2xl font-black tracking-widest text-black/20 font-serif">
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-xl sm:text-2xl font-black tracking-widest text-black/20 font-serif">
               {product.brand || "MOJILO"}
             </div>
           </div>
         </div>
 
+        {/* PRODUCT INFO */}
         <div className="lg:col-span-5 flex flex-col">
-          <h1 className="text-2xl font-bold tracking-wide text-black mb-2">{product.title}</h1>
 
-          <div className="flex items-center gap-2 mb-4">
+          {/* FIX: slightly smaller title on mobile */}
+          <h1 className="text-xl sm:text-2xl font-bold tracking-wide text-black mb-2">{product.title}</h1>
+
+          {/* FIX: wrap stars and meta on small screens */}
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3 sm:mb-4">
             <div className="flex text-amber-500">
               {[...Array(5)].map((_, i) => (
                 <span key={i} className={i < (product.rating || 5) ? "text-amber-400" : "text-gray-300"}>★</span>
@@ -159,18 +172,20 @@ export default function ProductDetails() {
             <span className="text-emerald-500 text-xs font-semibold">In Stock</span>
           </div>
 
-          <div className="text-2xl font-semibold mb-4">
+          <div className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
             {product.currency || "₹"}{typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
           </div>
 
-          <p className="text-xs leading-relaxed text-gray-600 mb-6 pb-6 border-b border-gray-200">
+          <p className="text-xs leading-relaxed text-gray-600 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-200">
             {product.description || "Premium styling composition featuring dynamic alignments built to survive seasonal wardrobe cycles."}
           </p>
 
+          {/* COLOURS */}
           {formattedColors.length > 0 && (
-            <div className="flex items-center gap-4 mb-5">
+            // FIX: stack label + swatches vertically on very small screens
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4 sm:mb-5">
               <span className="text-sm font-medium min-w-[70px]">Colours:</span>
-              <div className="flex gap-3">
+              <div className="flex gap-3 flex-wrap">
                 {formattedColors.map((color) => (
                   <button
                     key={color.id}
@@ -187,10 +202,12 @@ export default function ProductDetails() {
             </div>
           )}
 
+          {/* SIZES */}
           {product.sizes && product.sizes.length > 0 && (
-            <div className="flex items-center gap-4 mb-6">
+            // FIX: allow size buttons to wrap on mobile
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
               <span className="text-sm font-medium min-w-[70px]">Size:</span>
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 {product.sizes.map((size) => (
                   <button
                     key={size}
@@ -207,8 +224,12 @@ export default function ProductDetails() {
             </div>
           )}
 
-          <div className="flex items-center gap-3 mb-8">
-            <div className="flex items-center border border-gray-400 rounded overflow-hidden h-11">
+          {/* QUANTITY + ADD TO CART + WISHLIST */}
+          {/* FIX: on mobile, stack quantity on its own row, then full-width buttons below */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6 sm:mb-8">
+
+            {/* Quantity stepper */}
+            <div className="flex items-center border border-gray-400 rounded overflow-hidden h-11 w-fit">
               <button type="button" onClick={() => handleQuantityChange('dec')} className="px-3 cursor-pointer h-full hover:bg-gray-100 border-r border-gray-300 transition-colors">
                 <Minus size={14} />
               </button>
@@ -218,25 +239,36 @@ export default function ProductDetails() {
               </button>
             </div>
 
-            <button type="button" onClick={handleAddToCart} className="flex-1 cursor-pointer bg-[#936A3B] text-white font-medium text-sm h-11 rounded hover:bg-[#7d5931] transition-colors tracking-wide">
-              Add to Cart
-            </button>
-
-            <button type="button" onClick={handleWishlistToggle} className={`p-3 border rounded h-11 w-11 flex items-center cursor-pointer justify-center transition-colors ${isFavorited ? 'border-red-500 text-red-500 bg-red-50' : 'border-gray-400 text-gray-700 hover:border-black'}`}>
-              <Heart size={18} fill={isFavorited ? "currentColor" : "none"} />
-            </button>
+            {/* Add to Cart + Wishlist — full width on mobile */}
+            <div className="flex items-center gap-3 flex-1">
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="flex-1 cursor-pointer bg-[#936A3B] text-white font-medium text-sm h-11 rounded hover:bg-[#7d5931] transition-colors tracking-wide"
+              >
+                Add to Cart
+              </button>
+              <button
+                type="button"
+                onClick={handleWishlistToggle}
+                className={`p-3 border rounded h-11 w-11 flex items-center cursor-pointer justify-center transition-colors flex-shrink-0 ${isFavorited ? 'border-red-500 text-red-500 bg-red-50' : 'border-gray-400 text-gray-700 hover:border-black'}`}
+              >
+                <Heart size={18} fill={isFavorited ? "currentColor" : "none"} />
+              </button>
+            </div>
           </div>
 
+          {/* DELIVERY INFO */}
           <div className="border border-gray-300 rounded-md overflow-hidden">
-            <div className="p-4 flex items-start gap-4 border-b border-gray-300">
-              <Truck className="text-gray-800 mt-0.5" size={22} />
+            <div className="p-3 sm:p-4 flex items-start gap-3 sm:gap-4 border-b border-gray-300">
+              <Truck className="text-gray-800 mt-0.5 flex-shrink-0" size={20} />
               <div>
                 <h4 className="text-sm font-semibold text-gray-900 mb-0.5">Free Delivery</h4>
                 <p className="text-[11px] underline text-gray-800 font-medium cursor-pointer hover:text-black">Enter postal code for Availability</p>
               </div>
             </div>
-            <div className="p-4 flex items-start gap-4">
-              <RotateCcw className="text-gray-800 mt-0.5" size={22} />
+            <div className="p-3 sm:p-4 flex items-start gap-3 sm:gap-4">
+              <RotateCcw className="text-gray-800 mt-0.5 flex-shrink-0" size={20} />
               <div>
                 <h4 className="text-sm font-semibold text-gray-900 mb-0.5">Return Delivery</h4>
                 <p className="text-[11px] text-gray-600">Free 30 Days Returns. <span className="underline font-medium text-gray-800 cursor-pointer hover:text-black">Details</span></p>
@@ -245,9 +277,9 @@ export default function ProductDetails() {
           </div>
         </div>
       </div>
+
       <RelatedProducts currentProductId={id} category={product.category} subCategory={product.subCategory} />
       
-      {/* Add to Cart Success Modal */}
       {addedProduct && (
         <AddToCartSuccessModal 
           isOpen={isAddSuccessModalOpen}
