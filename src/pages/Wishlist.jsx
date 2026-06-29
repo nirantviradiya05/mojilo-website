@@ -1,143 +1,180 @@
 import React, { useState } from 'react';
-import ProductCard from '../components/ProductCard'; 
-import { useWishlist } from '../context/WishlistContext'; 
-import { useCart } from '../context/CartContext'; 
-import { products } from '../assets/Data'; 
-import ConfirmationModal from '../components/ConfirmationModal'; // Adjust path if needed
+import ProductCard from '../components/ProductCard';
+import { useWishlist } from '../context/WishlistContext';
+import { useCart } from '../context/CartContext';
+import { products } from '../assets/Data';
+import ConfirmationModal from '../components/ConfirmationModal';
+import { Heart, ShoppingBag, Sparkles } from 'lucide-react';
+
+/* ── Animations ───────────────────────────────────────────────────────────── */
+const styles = `
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .anim-fadeUp  { animation: fadeUp  0.45s cubic-bezier(.22,.68,0,1.1) both; }
+  .anim-fadeIn  { animation: fadeIn  0.35s ease both; }
+  .anim-scaleIn { animation: scaleIn 0.4s  cubic-bezier(.22,.68,0,1.1) both; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; }
+  }
+`;
 
 const WishlistPage = () => {
   const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
   const { addToCart } = useCart();
 
-  // Modal State Management Variables
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalTarget, setModalTarget] = useState({ type: null, id: null });
+  const [isModalOpen, setIsModalOpen]   = useState(false);
+  const [modalTarget, setModalTarget]   = useState({ type: null, id: null });
 
   const justForYouProducts = products.slice(-4);
 
-  // Trigger Modal Configuration for Single Item Deletion
   const handleRequestRemoveItem = (id) => {
     setModalTarget({ type: 'SINGLE_REMOVE', id });
     setIsModalOpen(true);
   };
 
-  // Move everything from Wishlist over to Cart Context Global Storage
   const handleMoveAllToBag = () => {
-    if (wishlist.length === 0) return;
-    
+    if (!wishlist.length) return;
     wishlist.forEach((product) => {
-      const defaultSize = product.sizes?.[0] || 'S';
+      const defaultSize    = product.sizes?.[0] || 'S';
       const defaultColorObj = product.colors?.[0] || 'olive';
-      
-      // Normalize color to object format
-      const colorObj = typeof defaultColorObj === 'object' 
-        ? defaultColorObj 
+      const colorObj = typeof defaultColorObj === 'object'
+        ? defaultColorObj
         : { id: defaultColorObj, name: defaultColorObj };
-      
-      // Generate consistent cartItemId
-      const colorId = typeof colorObj === 'object' ? colorObj.id : colorObj;
+      const colorId    = typeof colorObj === 'object' ? colorObj.id : colorObj;
       const cartItemId = `${product.id}-${colorId}-${defaultSize}`;
-      
-      addToCart({
-        ...product,
-        cartItemId,
-        selectedSize: defaultSize,
-        selectedColor: colorObj
-      }, 1);
+      addToCart({ ...product, cartItemId, selectedSize: defaultSize, selectedColor: colorObj }, 1);
     });
-    
     clearWishlist();
   };
 
-  // Single card explicit click configuration routing handler
-  const handleAddToCartSingle = (product) => {
-    addToCart(product, 1);
-  };
+  const handleAddToCartSingle = (product) => addToCart(product, 1);
 
-  // Central Router Core Execution Handler inside the confirmation block
   const handleConfirmAction = () => {
     if (modalTarget.type === 'SINGLE_REMOVE' && modalTarget.id) {
       removeFromWishlist(modalTarget.id);
     }
-    // Reset target context parameters safely
     setModalTarget({ type: null, id: null });
   };
 
   return (
-    <div className="min-h-screen bg-white text-black px-4 py-10 md:px-16 max-w-7xl mx-auto font-sans">
-      
-      {/* ================= WISHLIST SECTION ================= */}
-      <section className="mb-20">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-lg font-normal tracking-wide text-black">
-            Wishlist ({wishlist.length})
-          </h2>
-          {wishlist.length > 0 && (
-            <button 
-              onClick={handleMoveAllToBag}
-              className="border border-gray-300 hover:border-black text-sm px-6 py-3 rounded-sm transition font-medium text-black cursor-pointer"
-            >
-              Move All To Bag
-            </button>
-          )}
+    <>
+      <style>{styles}</style>
+
+      <div className="min-h-screen bg-white text-black font-sans antialiased">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 sm:py-12">
+
+          {/* ── WISHLIST SECTION ────────────────────────────────────────── */}
+          <section className="mb-14 sm:mb-20">
+
+            {/* Section header */}
+            <div className="anim-fadeUp flex flex-wrap items-center justify-between gap-4 mb-6 sm:mb-8">
+              <div className="flex items-center gap-3">
+                <span className="w-4 sm:w-5 h-8 sm:h-9 bg-[#8b5a2b] rounded-sm block flex-shrink-0" />
+                <h2 className="text-base sm:text-lg font-semibold tracking-wide text-black flex items-center gap-2">
+                  <Heart size={16} className="text-[#8b5a2b]" />
+                  Wishlist
+                  <span className="text-sm font-normal text-gray-400">({wishlist.length})</span>
+                </h2>
+              </div>
+
+              {wishlist.length > 0 && (
+                <button
+                  onClick={handleMoveAllToBag}
+                  className="flex items-center gap-2 border border-gray-300 hover:border-black hover:bg-black hover:text-white text-sm px-4 sm:px-6 py-2.5 sm:py-3 rounded transition-all duration-200 font-medium text-black cursor-pointer"
+                >
+                  <ShoppingBag size={14} />
+                  <span>Move All to Bag</span>
+                </button>
+              )}
+            </div>
+
+            {/* Empty state */}
+            {wishlist.length === 0 ? (
+              <div className="anim-scaleIn flex flex-col items-center justify-center text-center py-16 sm:py-24 border border-dashed border-gray-200 rounded-2xl bg-gray-50/50 px-4">
+                <Heart size={48} className="text-gray-200 mb-4" />
+                <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">Your wishlist is empty</h3>
+                <p className="text-sm text-gray-400 max-w-xs">
+                  Browse the shop and tap the heart icon on items you love.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
+                {wishlist.map((item, i) => (
+                  <div
+                    key={item.id}
+                    className="anim-fadeUp"
+                    style={{ animationDelay: `${i * 0.06}s` }}
+                  >
+                    <ProductCard
+                      product={item}
+                      isWishlistItem={true}
+                      onRemove={handleRequestRemoveItem}
+                      onAddToCart={handleAddToCartSingle}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* ── JUST FOR YOU SECTION ────────────────────────────────────── */}
+          <section>
+
+            {/* Section header */}
+            <div className="anim-fadeUp flex flex-wrap items-center justify-between gap-4 mb-6 sm:mb-8">
+              <div className="flex items-center gap-3">
+                <span className="w-4 sm:w-5 h-8 sm:h-9 bg-[#8b5a2b] rounded-sm block flex-shrink-0" />
+                <h2 className="text-base sm:text-lg font-semibold tracking-wide text-black flex items-center gap-2">
+                  <Sparkles size={15} className="text-[#8b5a2b]" />
+                  Just For You
+                </h2>
+              </div>
+              <button className="border border-gray-300 hover:border-black hover:bg-black hover:text-white text-sm px-5 sm:px-8 py-2.5 sm:py-3 rounded transition-all duration-200 font-medium text-black cursor-pointer">
+                See All
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
+              {justForYouProducts.map((item, i) => (
+                <div
+                  key={item.id}
+                  className="anim-fadeUp"
+                  style={{ animationDelay: `${0.1 + i * 0.06}s` }}
+                >
+                  <ProductCard
+                    product={item}
+                    isWishlistItem={false}
+                    onAddToCart={handleAddToCartSingle}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+
         </div>
+      </div>
 
-        {wishlist.length === 0 ? (
-          <div className="text-center text-gray-400 py-16 border border-dashed rounded-md">
-            Your wishlist is currently empty. Like items on the shop to see them here!
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-            {wishlist.map((item) => (
-              <ProductCard
-                key={item.id}
-                product={item}
-                isWishlistItem={true}
-                onRemove={handleRequestRemoveItem} // Intercepting layout routing with our modal process
-                onAddToCart={handleAddToCartSingle} 
-              />
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* ================= JUST FOR YOU SECTION ================= */}
-      <section>
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-4">
-            <span className="w-5 h-9 bg-[#8b5a2b] rounded-sm block"></span>
-            <h2 className="text-lg font-medium tracking-wide text-black">
-              Just For You
-            </h2>
-          </div>
-          <button className="border border-gray-300 hover:border-black text-sm px-8 py-3 rounded-sm transition font-medium text-black cursor-pointer">
-            See All
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-          {justForYouProducts.map((item) => (
-            <ProductCard
-              key={item.id}
-              product={item}
-              isWishlistItem={false}
-              onAddToCart={handleAddToCartSingle} 
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* RENDER MODAL ROOT INTERACTIVE FRAMEWORK */}
       <ConfirmationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmAction}
-        title="Are you sure you want to remove this item from your wishlist?"
+        title="Remove this item from your wishlist?"
         confirmText="Yes, Remove"
         cancelText="Keep Item"
       />
-
-    </div>
+    </>
   );
 };
 

@@ -20,7 +20,20 @@ export function ProductCard({ product, isWishlistItem }) {
     : product.image || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600';
 
   const displayTitle = product.title || product.name || 'Untitled Product';
-  const displayPrice = product.price ? `${product.currency || '₹'}${product.price}` : 'Price N/A';
+
+  // FIX: Intelligent formatting to prevent double ₹ symbol
+  // It checks if the current price value is a number or a string.
+  // If it's a number, it formats it. If it's a string, it checks if '₹' already exists.
+  const formatPrice = (price) => {
+    if (price === undefined || price === null) return 'Price N/A';
+    const priceStr = String(price);
+    if (priceStr.includes('₹')) return priceStr;
+    
+    const numericValue = typeof price === 'number' ? price.toFixed(2) : price;
+    return `₹ ${numericValue}`;
+  };
+
+  const displayPrice = formatPrice(product.price);
 
   const handleNavigateToDetails = () => {
     navigate(`/product-details/${product.id}`);
@@ -55,7 +68,6 @@ export function ProductCard({ product, isWishlistItem }) {
     
     addToCart(itemToAdd, 1);
     
-    // Show success modal
     setAddedProduct(itemToAdd);
     setIsAddSuccessModalOpen(true);
   };
@@ -134,7 +146,6 @@ export function ProductCard({ product, isWishlistItem }) {
         </button>
       </div>
       
-      {/* Add to Cart Success Modal */}
       {addedProduct && (
         <AddToCartSuccessModal 
           isOpen={isAddSuccessModalOpen}
